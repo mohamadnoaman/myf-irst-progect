@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Subjects" Relationship="Database1Model.FK_Subjects_ToTable" FromRole="Department" ToRole="Subject" />
+    <NavigationProperty Name="Students" Relationship="Database1Model.FK_Students_ToTable" FromRole="Department" ToRole="Student" />
+  </EntityType>
+  <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="StudentMarks" EntityType="Database1Model.StudentMark" />
+    <EntitySet Name="Subjects" EntityType="Database1Model.Subject" />
+    <EntitySet Name="Exams" EntityType="Database1Model.Exam" />
+    <EntitySet Name="SubjectLectures" EntityType="Database1Model.SubjectLecture" />
+    <AssociationSet Name="FK_Exams_ToTable" Association="Database1Model.FK_Exams_ToTable">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Exam" EntitySet="Exams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentMarks_ToTable_1" Association="Database1Model.FK_StudentMarks_ToTable_1">
+      <End Role="Exam" EntitySet="Exams" />
+      <End Role="StudentMark" EntitySet="StudentMarks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subjects_ToTable" Association="Database1Model.FK_Subjects_ToTable">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Subject" EntitySet="Subjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubjectLectures_ToTable" Association="Database1Model.FK_SubjectLectures_ToTable">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="SubjectLecture" EntitySet="SubjectLectures" />
+    </AssociationSet>
+    <EntitySet Name="Students" EntityType="Database1Model.Student" />
+    <AssociationSet Name="FK_Students_ToTable" Association="Database1Model.FK_Students_ToTable">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentMarks_ToTable" Association="Database1Model.FK_StudentMarks_ToTable">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="StudentMark" EntitySet="StudentMarks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="StudentMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ExamId" Type="Int32" />
+    <Property Name="Mark" Type="Int32" />
+    <Property Name="StudentId" Type="Int32" />
+    <NavigationProperty Name="Exam" Relationship="Database1Model.FK_StudentMarks_ToTable_1" FromRole="StudentMark" ToRole="Exam" />
+    <NavigationProperty Name="Student" Relationship="Database1Model.FK_StudentMarks_ToTable" FromRole="StudentMark" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DepartmentId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MinimumDegree" Type="Int32" />
+    <Property Name="Term" Type="Int32" />
+    <Property Name="Year" Type="Int32" />
+    <NavigationProperty Name="Exams" Relationship="Database1Model.FK_Exams_ToTable" FromRole="Subject" ToRole="Exam" />
+    <NavigationProperty Name="Department" Relationship="Database1Model.FK_Subjects_ToTable" FromRole="Subject" ToRole="Department" />
+    <NavigationProperty Name="SubjectLectures" Relationship="Database1Model.FK_SubjectLectures_ToTable" FromRole="Subject" ToRole="SubjectLecture" />
+  </EntityType>
+  <EntityType Name="Exam">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Term" Type="Int32" />
+    <NavigationProperty Name="Subject" Relationship="Database1Model.FK_Exams_ToTable" FromRole="Exam" ToRole="Subject" />
+    <NavigationProperty Name="StudentMarks" Relationship="Database1Model.FK_StudentMarks_ToTable_1" FromRole="Exam" ToRole="StudentMark" />
+  </EntityType>
+  <EntityType Name="SubjectLecture">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Subject" Relationship="Database1Model.FK_SubjectLectures_ToTable" FromRole="SubjectLecture" ToRole="Subject" />
+  </EntityType>
+  <Association Name="FK_Exams_ToTable">
+    <End Type="Database1Model.Subject" Role="Subject" Multiplicity="0..1" />
+    <End Type="Database1Model.Exam" Role="Exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Exam">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentMarks_ToTable_1">
+    <End Type="Database1Model.Exam" Role="Exam" Multiplicity="0..1" />
+    <End Type="Database1Model.StudentMark" Role="StudentMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentMark">
+        <PropertyRef Name="ExamId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subjects_ToTable">
+    <End Type="Database1Model.Department" Role="Department" Multiplicity="0..1" />
+    <End Type="Database1Model.Subject" Role="Subject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subject">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubjectLectures_ToTable">
+    <End Type="Database1Model.Subject" Role="Subject" Multiplicity="0..1" />
+    <End Type="Database1Model.SubjectLecture" Role="SubjectLecture" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SubjectLecture">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RegisterDate" Type="DateTime" Precision="0" />
+    <Property Name="DepartmentId" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Database1Model.FK_Students_ToTable" FromRole="Student" ToRole="Department" />
+    <NavigationProperty Name="StudentMarks" Relationship="Database1Model.FK_StudentMarks_ToTable" FromRole="Student" ToRole="StudentMark" />
+  </EntityType>
+  <Association Name="FK_Students_ToTable">
+    <End Type="Database1Model.Department" Role="Department" Multiplicity="0..1" />
+    <End Type="Database1Model.Student" Role="Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentMarks_ToTable">
+    <End Type="Database1Model.Student" Role="Student" Multiplicity="0..1" />
+    <End Type="Database1Model.StudentMark" Role="StudentMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentMark">
+        <PropertyRef Name="StudentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

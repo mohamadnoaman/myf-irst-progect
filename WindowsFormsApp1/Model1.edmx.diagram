@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4581fa434c584d11a3810a133312a31e" Name="Diagram1">
+        <EntityTypeShape EntityType="Database1Model.Department" Width="1.5" PointX="7.25" PointY="4.25" IsExpanded="true" FillColor="0, 192, 192" />
+        <EntityTypeShape EntityType="Database1Model.StudentMark" Width="1.5" PointX="1.25" PointY="3.75" FillColor="Cyan" />
+        <EntityTypeShape EntityType="Database1Model.Subject" Width="1.5" PointX="4.125" PointY="0.625" FillColor="Cyan" />
+        <EntityTypeShape EntityType="Database1Model.Exam" Width="1.5" PointX="1.375" PointY="0.625" FillColor="Cyan" />
+        <EntityTypeShape EntityType="Database1Model.SubjectLecture" Width="1.5" PointX="7.125" PointY="0.75" FillColor="Cyan" />
+        <AssociationConnector Association="Database1Model.FK_Exams_ToTable" />
+        <AssociationConnector Association="Database1Model.FK_StudentMarks_ToTable_1" />
+        <AssociationConnector Association="Database1Model.FK_Subjects_ToTable" />
+        <AssociationConnector Association="Database1Model.FK_SubjectLectures_ToTable" />
+        <EntityTypeShape EntityType="Database1Model.Student" Width="1.5" PointX="4.125" PointY="4.25" FillColor="Cyan" />
+        <AssociationConnector Association="Database1Model.FK_Students_ToTable" />
+        <AssociationConnector Association="Database1Model.FK_StudentMarks_ToTable" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
